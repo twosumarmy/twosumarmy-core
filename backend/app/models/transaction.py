@@ -7,7 +7,14 @@ class TransactionORM(Base):
     __tablename__ = "transactions"
 
     id = Column(Integer, primary_key=True, index=True)
-    date = Column(Date)
+    value_date = Column(Date)
     amount = Column(Float)
-    description = Column(String, default="")
+    purpose = Column(String, default="")
     currency = Column(String)
+
+    origin_iban = Column(String)
+
+    transaction_type = Column(String)
+    receiver_name = Column(String)
+    receiver_iban = Column(String)
+    receiver_swift_code = Column(String)

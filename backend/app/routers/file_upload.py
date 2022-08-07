@@ -31,10 +31,15 @@ async def create_upload_sparkasse_transactions(file: UploadFile, db: Session = D
 
     for _, row in df.iterrows():
         transaction = Transaction(
-            date=datetime.datetime.strptime(row["Day of entry"], "%d.%m.%y"),
-            description=row["Purpose"],
+            value_date=datetime.datetime.strptime(row["Day of entry"], "%d.%m.%y"),
+            purpose=row["Purpose"],
             amount=float(row["Amount"].replace(",", ".")),
             currency=row["Currency"],
+            origin_iban=row["Order account"],
+            transaction_type=row["Posting text"],
+            receiver_name=row["Beneficiary/payer"],
+            receiver_iban=row["Account number"],
+            receiver_swift_code=row["Bank sort code"]
         )
         successful = transaction_crud.create_transaction(db, transaction)
         print(successful)
