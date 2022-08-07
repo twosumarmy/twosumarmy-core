@@ -15,7 +15,7 @@ export const App: React.FC = ({}) => {
       const formData = new FormData();
       formData.append("file", selectedFile);
       axios
-        .post(`${environmentConfig.apiUrl}/transactions/sparkasse`, formData, {
+        .post(`${environmentConfig.apiUrl}/file_upload/sparkasse`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
