@@ -4,10 +4,19 @@ from pydantic import BaseModel
 
 
 class Transaction(BaseModel):
-    date: datetime.date
+    value_date: datetime.date
+
     amount: float
-    description: str
+    purpose: str
     currency: str
+
+    transaction_type: str
+
+    origin_iban: str
+
+    receiver_name: str
+    receiver_iban: str
+    receiver_swift_code: str
 
     class Config:
         orm_mode = True
