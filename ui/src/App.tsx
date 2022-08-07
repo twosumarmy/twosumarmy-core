@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from "react";
+import { FileInput } from "./components/FileInput/FileInput";
 
+export const App: React.FC = ({}) => {
+  const [_selectedFile, setSelectedFile] = useState<File | null>(null);
 
-export const App: React.FC = ({
-}) => {
   const render = (): React.ReactElement => {
     return (
       <div>
-      <h1 className="text-3xl font-bold underline">
-        Learn React
-      </h1>
-    </div>
+        <FileInput
+          label="File upload"
+          accept=".csv"
+          onChange={(e) => setSelectedFile(e.target.files![0])}
+        />
+      </div>
     );
   };
 
   return render();
 };
-
