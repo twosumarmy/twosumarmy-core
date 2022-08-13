@@ -31,15 +31,15 @@ export const transactionSlice = createSlice({
     builder.addCase(fetchTransactions.pending, (state) => {
         state.isFetching = true
         state.error = undefined
-      }),
-    builder.addCase(fetchTransactions.rejected, (state, action) => {
-        state.transactions = []
-        state.error = action.error.message
-        state.isFetching = false
-      }),
+      })
     builder.addCase(fetchTransactions.fulfilled, (state, action) => {
       state.transactions = action.payload
       state.error = undefined
+      state.isFetching = false
+    })
+    builder.addCase(fetchTransactions.rejected, (state, action) => {
+      state.transactions = []
+      state.error = action.error.message
       state.isFetching = false
     })
   },
