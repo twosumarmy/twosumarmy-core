@@ -3,23 +3,34 @@ import api from "./lib/api";
 import { AppLayout } from "./components/AppLayout/AppLayout";
 import { Button } from "./components/Button/Button";
 import { FileInput } from "./components/FileInput/FileInput";
+import { Alert } from "./components/Alert/Alert";
 
 export const App: React.FC = ({}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
 
   const uploadFile = () => {
     if (selectedFile) {
+      setError(undefined);
+      setLoading(true);
       api.FileUpload.createUploadSparkasseTransactionsFileUploadSparkassePost(
         selectedFile
       )
         .then(() => setSelectedFile(null))
-        .catch((e) => console.log("Upload failed.", e));
+        .catch((e: Error) => setError(e.message))
+        .finally(() => setLoading(false));
     }
   };
 
   const render = (): React.ReactElement => {
     return (
       <AppLayout>
+        {error && (
+          <div className="my-4">
+            <Alert description={error} />
+          </div>
+        )}
         <FileInput
           label={selectedFile ? selectedFile.name : "No file selected"}
           accept=".csv"
@@ -28,7 +39,7 @@ export const App: React.FC = ({}) => {
         <Button
           variant="primary"
           className="w-full my-4"
-          disabled={selectedFile === null}
+          disabled={selectedFile === null || loading}
           onClick={() => uploadFile()}
         >
           Upload file
