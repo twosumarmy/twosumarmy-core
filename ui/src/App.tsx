@@ -1,29 +1,18 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { EnvironmentConfig } from "./lib/environment";
+import api from "./lib/api";
 import { AppLayout } from "./components/AppLayout/AppLayout";
 import { Button } from "./components/Button/Button";
 import { FileInput } from "./components/FileInput/FileInput";
-
-const environmentConfig = EnvironmentConfig;
 
 export const App: React.FC = ({}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const uploadFile = () => {
     if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      axios
-        .post(`${environmentConfig.apiUrl}/file_upload/sparkasse`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          setSelectedFile(null);
-          console.log("Upload succeed.");
-        })
+      api.FileUpload.createUploadSparkasseTransactionsFileUploadSparkassePost(
+        selectedFile
+      )
+        .then(() => setSelectedFile(null))
         .catch((e) => console.log("Upload failed.", e));
     }
   };
@@ -32,7 +21,7 @@ export const App: React.FC = ({}) => {
     return (
       <AppLayout>
         <FileInput
-          label={selectedFile ? selectedFile.name : "File upload"}
+          label={selectedFile ? selectedFile.name : "No file selected"}
           accept=".csv"
           onChange={(e) => setSelectedFile(e.target.files![0])}
         />
