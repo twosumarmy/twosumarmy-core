@@ -1,45 +1,45 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { EnvironmentConfig } from "./lib/environment";
+import api from "./lib/api";
 import { AppLayout } from "./components/AppLayout/AppLayout";
 import { Button } from "./components/Button/Button";
 import { FileInput } from "./components/FileInput/FileInput";
-
-const environmentConfig = EnvironmentConfig;
+import { Alert } from "./components/Alert/Alert";
 
 export const App: React.FC = ({}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
 
   const uploadFile = () => {
     if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      axios
-        .post(`${environmentConfig.apiUrl}/file_upload/sparkasse`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          setSelectedFile(null);
-          console.log("Upload succeed.");
-        })
-        .catch((e) => console.log("Upload failed.", e));
+      setError(undefined);
+      setLoading(true);
+      api.FileUpload.createUploadSparkasseTransactionsFileUploadSparkassePost(
+        selectedFile
+      )
+        .then(() => setSelectedFile(null))
+        .catch((e: Error) => setError(e.message))
+        .finally(() => setLoading(false));
     }
   };
 
   const render = (): React.ReactElement => {
     return (
       <AppLayout>
+        {error && (
+          <div className="my-4">
+            <Alert description={error} />
+          </div>
+        )}
         <FileInput
-          label={selectedFile ? selectedFile.name : "File upload"}
+          label={selectedFile ? selectedFile.name : "No file selected"}
           accept=".csv"
           onChange={(e) => setSelectedFile(e.target.files![0])}
         />
         <Button
           variant="primary"
           className="w-full my-4"
-          disabled={selectedFile === null}
+          disabled={selectedFile === null || loading}
           onClick={() => uploadFile()}
         >
           Upload file
