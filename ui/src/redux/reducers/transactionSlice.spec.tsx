@@ -16,6 +16,7 @@ describe(transactionSlice.name, () => {
       receiver_name: "string",
       receiver_iban: "string",
       receiver_swift_code: "string",
+      category: "essen",
     },
   ];
 
