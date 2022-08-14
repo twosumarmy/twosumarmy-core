@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { TransactionListPage } from "./pages/TransactionListPage";
 import { UploadFilePage } from "./pages/UploadFilePage";
 
 export const App: React.FC = ({}) => {
@@ -7,6 +8,7 @@ export const App: React.FC = ({}) => {
     return (
       <Routes>
         <Route path="/" element={<UploadFilePage />} />
+        <Route path="/transactions" element={<TransactionListPage />} />
       </Routes>
     );
   };
