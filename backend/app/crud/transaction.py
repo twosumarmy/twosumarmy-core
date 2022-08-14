@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-from app.models.transaction import TransactionORM
-from app.schemas.transaction import Transaction
+from app.models import TransactionORM
+from app.schemas import Transaction
 
 
 def get_transactions(db: Session, skip: int = 0, limit: int = 100):

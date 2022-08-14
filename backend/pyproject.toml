@@ -11,6 +11,7 @@ hypercorn = "^0.13.2"
 python-multipart = "^0.0.5"
 SQLAlchemy = "^1.4.39"
 pandas = "^1.4.3"
+jellyfish = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
 

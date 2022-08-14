@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.crud import transaction as transaction_crud
 from app.dependencies import get_db
-from app.schemas.transaction import Transaction
+from app.schemas import Transaction
 
 router = APIRouter()
 
