@@ -30,8 +30,8 @@ async def create_upload_sparkasse_transactions(file: UploadFile, db: Session = D
     df = pd.read_csv(file.file, delimiter=";")
 
     for _, row in df.iterrows():
-        amount = float(row["Betrag"].replace(".", "").replace(",", ".")),
-        company_name = row["Beguestigter/Zahlungspflichtiger"]
+        amount = float(row["Betrag"].replace(".", "").replace(",", "."))
+        company_name = row["Beguenstigter/Zahlungspflichtiger"]
         if amount < 0:  # noqa
             category = tagger.get_category_by_company_name(company_name=company_name)
         else:

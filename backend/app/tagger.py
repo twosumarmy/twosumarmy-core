@@ -13,10 +13,10 @@ class TransactionTagger:
 
     def get_category_by_company_name(self, company_name):
         df = self.company_df.copy()
-        df["similarity_scores"] = df.apply(lambda row: jellyfish.jaro_distance(company_name, row["company"]), axis=1)
-        match = df.max()
+        df["similarity_scores"] = df.apply(lambda row: jellyfish.jaro_distance(company_name.lower(), row["company"]), axis=1)
+        match = df.loc[df['similarity_scores'].idxmax()]
 
-        if match["scores"] > 0.5:
+        if match["similarity_scores"] >= 0.5:
             return TransactionCategory[match["category"].upper()]
         else:
             return TransactionCategory.OTHERS
