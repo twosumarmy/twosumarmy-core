@@ -2,6 +2,8 @@ import datetime
 
 from pydantic import BaseModel
 
+from app.enums import TransactionCategory
+
 
 class Transaction(BaseModel):
     value_date: datetime.date
@@ -18,5 +20,8 @@ class Transaction(BaseModel):
     receiver_iban: str
     receiver_swift_code: str
 
+    category: TransactionCategory
+
     class Config:
         orm_mode = True
+        use_enum_values = True
