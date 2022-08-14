@@ -24,6 +24,7 @@ export const TransactionListPage: React.FC = ({}) => {
           <Table.HeadCell>Company</Table.HeadCell>
           <Table.HeadCell>Purpose</Table.HeadCell>
           <Table.HeadCell>Type</Table.HeadCell>
+          <Table.HeadCell>Category</Table.HeadCell>
           <Table.HeadCell>Amount</Table.HeadCell>
         </Table.Head>
         <Table.Body>
@@ -31,12 +32,13 @@ export const TransactionListPage: React.FC = ({}) => {
             <Table.Row key={index}>
               <Table.DataCell>{transaction.value_date}</Table.DataCell>
               <Table.DataCell fontWeight="medium">
-                {transaction.receiver_name}
+                {transaction.receiver_name.slice(0, 30)}
               </Table.DataCell>
               <Table.DataCell>
                 {transaction.purpose.slice(0, 30)}
               </Table.DataCell>
               <Table.DataCell>{transaction.transaction_type}</Table.DataCell>
+              <Table.DataCell>{transaction.category}</Table.DataCell>
               <Table.DataCell>{transaction.amount} €</Table.DataCell>
             </Table.Row>
           ))}
