@@ -3,6 +3,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchTransactions } from "../redux/reducers/transactionSlice";
 import { AppLayout } from "../components/AppLayout/AppLayout";
 import Table from "../components/Table";
+import { Transaction } from "../generated";
+import { Money } from "../lib/money";
+import { MoneyBadge } from "../components/Badge/MoneyBadge";
+import { Badge } from "../components/Badge/Badge";
 
 export const TransactionListPage: React.FC = ({}) => {
   const dispatch = useAppDispatch();
@@ -28,22 +32,32 @@ export const TransactionListPage: React.FC = ({}) => {
           <Table.HeadCell>Amount</Table.HeadCell>
         </Table.Head>
         <Table.Body>
-          {transactions.map((transaction, index) => (
-            <Table.Row key={index}>
-              <Table.DataCell>{transaction.value_date}</Table.DataCell>
-              <Table.DataCell fontWeight="medium">
-                {transaction.receiver_name.slice(0, 30)}
-              </Table.DataCell>
-              <Table.DataCell>
-                {transaction.purpose.slice(0, 30)}
-              </Table.DataCell>
-              <Table.DataCell>{transaction.transaction_type}</Table.DataCell>
-              <Table.DataCell>{transaction.category}</Table.DataCell>
-              <Table.DataCell>{transaction.amount} €</Table.DataCell>
-            </Table.Row>
-          ))}
+          {transactions.map((transaction, index) =>
+            renderRow(transaction, index)
+          )}
         </Table.Body>
       </Table.Container>
+    );
+  };
+
+  const renderRow = (
+    transaction: Transaction,
+    index: number | string
+  ): React.ReactElement => {
+    const money = new Money(transaction.amount, "EUR");
+    return (
+      <Table.Row key={index}>
+        <Table.DataCell>{transaction.value_date}</Table.DataCell>
+        <Table.DataCell fontWeight="medium">
+          {transaction.receiver_name.slice(0, 30)}
+        </Table.DataCell>
+        <Table.DataCell>{transaction.purpose.slice(0, 30)}</Table.DataCell>
+        <Table.DataCell>
+          {<Badge variant="white">{transaction.transaction_type}</Badge>}
+        </Table.DataCell>
+        <Table.DataCell>{transaction.category}</Table.DataCell>
+        <Table.DataCell>{<MoneyBadge money={money} />}</Table.DataCell>
+      </Table.Row>
     );
   };
 
