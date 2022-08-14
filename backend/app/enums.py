@@ -1,19 +1,19 @@
-from enum import IntEnum
+from enum import Enum
 
 
-class TransactionCategory(IntEnum):
-    CASH = 1  # transaction_type
-    ENTERTAINMENT = 2  # ['netflix', 'prime video', 'disney'],
-    FOOD = 3  # ['bar', 'restaurant', 'essen'],
-    HEALTH = 4  # ['aok'],
-    INSURANCE = 5  # ['ergo']
-    GROCERY = 6  # ['rewe', 'lidl']
-    LOAN = 7  # ['postbank']
-    REFUND = 8
-    SALARY = 9  # ['gehalt', 'lohn']
-    INVESTMENT = 10  # ['trade republik', 'scaleable capital']
-    SHOPPING = 11  # ['amazon', 'asos', 'media markt', 'rolex', 'marc gebauer']
-    TAX = 12  # ['steuerbüro']
-    TRANSPORT = 13  # ['lime', 'uber'],
-    TRAVEL = 14  # ['hotel', 'getyourguide', 'tui'],
-    OTHERS = 99
+class TransactionCategory(Enum):
+    CASH = "barzahlung"  # transaction_type
+    ENTERTAINMENT = "entertainment"  # ['netflix', 'prime video', 'disney'],
+    FOOD = "essen"  # ['bar', 'restaurant', 'essen'],
+    HEALTH = "gesundheit"  # ['aok'],
+    INSURANCE = "versicherung"  # ['ergo']
+    GROCERY = "lebensmittel"  # ['rewe', 'lidl']
+    LOAN = "zinsen"  # ['postbank']
+    REFUND = "rückerstattung"
+    SALARY = "gehalt"  # ['gehalt', 'lohn']
+    INVESTMENT = "anlage"  # ['trade republik', 'scaleable capital']
+    SHOPPING = "shopping"  # ['amazon', 'asos', 'media markt', 'rolex', 'marc gebauer']
+    TAX = "steuern"  # ['steuerbüro']
+    TRANSPORT = "transport"  # ['lime', 'uber'],
+    TRAVEL = "reise"  # ['hotel', 'getyourguide', 'tui'],
+    OTHERS = "andere"
