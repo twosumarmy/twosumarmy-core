@@ -27,7 +27,7 @@ async def create_upload_sparkasse_transactions(file: UploadFile, db: Session = D
     if not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only supports .csv files")
 
-    df = pd.read_csv(file.file, delimiter=";")
+    df = pd.read_csv(file.file, delimiter=";", encoding='latin-1')
 
     for _, row in df.iterrows():
         amount = float(row["Betrag"].replace(".", "").replace(",", "."))
