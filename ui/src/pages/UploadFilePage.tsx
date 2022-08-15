@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import api from "../lib/api";
 import { Alert } from "../components/Alert/Alert";
-import { AppLayout } from "../components/AppLayout/AppLayout";
 import { Button } from "../components/Button/Button";
 import { FileInput } from "../components/FileInput/FileInput";
 
@@ -25,7 +24,7 @@ export const UploadFilePage: React.FC = ({}) => {
 
   const render = (): React.ReactElement => {
     return (
-      <AppLayout>
+      <div>
         {error && (
           <div className="my-4">
             <Alert description={error} />
@@ -44,7 +43,7 @@ export const UploadFilePage: React.FC = ({}) => {
         >
           Upload file
         </Button>
-      </AppLayout>
+      </div>
     );
   };
 
