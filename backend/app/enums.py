@@ -11,7 +11,7 @@ class TransactionCategory(Enum):
     LOAN = "zinsen"  # ['postbank']
     REFUND = "rückerstattung"
     SALARY = "gehalt"  # ['gehalt', 'lohn']
-    INVESTMENT = "anlage"  # ['trade republik', 'scaleable capital']
+    INVESTMENTS = "anlage"  # ['trade republik', 'scaleable capital']
     SHOPPING = "shopping"  # ['amazon', 'asos', 'media markt', 'rolex', 'marc gebauer']
     TAX = "steuern"  # ['steuerbüro']
     TRANSPORT = "transport"  # ['lime', 'uber'],

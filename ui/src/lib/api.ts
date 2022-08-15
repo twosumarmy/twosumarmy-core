@@ -4,7 +4,7 @@ import { EnvironmentConfig } from "./environment";
 
 
 const environment = EnvironmentConfig;
-const axiosInstance = axios.create();
+export const axiosInstance = axios.create();
 const configuration = new Configuration({
     basePath: environment.apiUrl
 })

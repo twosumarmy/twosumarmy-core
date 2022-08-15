@@ -101,7 +101,40 @@ export interface Transaction {
      * @memberof Transaction
      */
     'receiver_swift_code': string;
+    /**
+     * 
+     * @type {TransactionCategory}
+     * @memberof Transaction
+     */
+    'category': TransactionCategory;
 }
+/**
+ * An enumeration.
+ * @export
+ * @enum {string}
+ */
+
+export const TransactionCategory = {
+    Barzahlung: 'barzahlung',
+    Entertainment: 'entertainment',
+    Essen: 'essen',
+    Gesundheit: 'gesundheit',
+    Versicherung: 'versicherung',
+    Lebensmittel: 'lebensmittel',
+    Zinsen: 'zinsen',
+    Rckerstattung: 'rückerstattung',
+    Gehalt: 'gehalt',
+    Anlage: 'anlage',
+    Shopping: 'shopping',
+    Steuern: 'steuern',
+    Transport: 'transport',
+    Reise: 'reise',
+    Andere: 'andere'
+} as const;
+
+export type TransactionCategory = typeof TransactionCategory[keyof typeof TransactionCategory];
+
+
 /**
  * 
  * @export
