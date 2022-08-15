@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchTransactions } from "../redux/reducers/transactionSlice";
-import { AppLayout } from "../components/AppLayout/AppLayout";
 import Table from "../components/Table";
 import { Transaction } from "../generated";
 import { Money } from "../lib/money";
@@ -17,7 +16,7 @@ export const TransactionListPage: React.FC = ({}) => {
   }, []);
 
   const render = (): React.ReactElement => {
-    return <AppLayout>{renderTable()}</AppLayout>;
+    return <div>{renderTable()}</div>;
   };
 
   const renderTable = (): React.ReactElement => {
