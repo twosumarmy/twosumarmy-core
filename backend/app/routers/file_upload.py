@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 
 from app.crud import transaction as transaction_crud
 from app.dependencies import get_db
-from app.schemas import Transaction, TransactionCategory
+from app.enums import TransactionType
+from app.schemas import TransactionCategory, Transaction
 from app.tagger import tagger
 
 router = APIRouter()
@@ -34,8 +35,12 @@ async def create_upload_sparkasse_transactions(file: UploadFile, db: Session = D
         company_name = row["Beguenstigter/Zahlungspflichtiger"]
         if amount < 0:  # noqa
             category = tagger.get_category_by_company_name(company_name=company_name)
+            transaction_type = TransactionType.expenses
         else:
             category = TransactionCategory.SALARY
+            transaction_type = TransactionType.income
+
+        balance = 100
 
         transaction = Transaction(
             value_date=datetime.datetime.strptime(row["Buchungstag"], "%d.%m.%y"),
@@ -48,6 +53,8 @@ async def create_upload_sparkasse_transactions(file: UploadFile, db: Session = D
             receiver_iban=row["Kontonummer/IBAN"],
             receiver_swift_code=row["BIC (SWIFT-Code)"],
             category=category,
+            type=transaction_type,
+            balance=balance,
         )
 
         transaction_crud.create_transaction(db, transaction)

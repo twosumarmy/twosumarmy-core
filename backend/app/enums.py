@@ -17,3 +17,8 @@ class TransactionCategory(Enum):
     TRANSPORT = "transport"  # ['lime', 'uber'],
     TRAVEL = "reise"  # ['hotel', 'getyourguide', 'tui'],
     OTHERS = "andere"
+
+
+class TransactionType(Enum):
+    income = "einkommen"
+    expenses = "ausgaben"
