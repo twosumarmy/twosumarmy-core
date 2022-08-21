@@ -2,17 +2,22 @@ import datetime
 
 from pydantic import BaseModel
 
-from app.enums import TransactionCategory
+from app.enums import TransactionCategory, TransactionFlow
 
 
-class Transaction(BaseModel):
+class Balance(BaseModel):
+    value: float
+    currency: str
+
+
+class TransactionCreate(BaseModel):
     value_date: datetime.date
 
     amount: float
     purpose: str
     currency: str
 
-    transaction_type: str
+    type: str
 
     origin_iban: str
 
@@ -21,7 +26,29 @@ class Transaction(BaseModel):
     receiver_swift_code: str
 
     category: TransactionCategory
+    flow: TransactionFlow
+
+    balance: float
+
+
+class Transaction(TransactionCreate):
+    id: int
 
     class Config:
         orm_mode = True
-        # use_enum_values = True
+
+
+class TransactionByCategory(BaseModel):
+    amount: float
+    category: TransactionCategory
+
+    class Config:
+        orm_mode = True
+
+
+class TransactionByType(BaseModel):
+    amount: float
+    flow: TransactionFlow
+
+    class Config:
+        orm_mode = True
