@@ -7,16 +7,19 @@ import transactionSlice, { fetchTransactions } from "./transactionSlice";
 describe(transactionSlice.name, () => {
   const mockResponse: ReadonlyArray<Transaction> = [
     {
+      id: 1,
       value_date: "2022-08-13",
       amount: 200,
       purpose: "string",
       currency: "string",
-      transaction_type: "string",
+      type: "string",
       origin_iban: "string",
       receiver_name: "string",
       receiver_iban: "string",
       receiver_swift_code: "string",
       category: "essen",
+      flow: "ausgaben",
+      balance: 100,
     },
   ];
 

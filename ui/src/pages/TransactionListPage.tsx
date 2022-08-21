@@ -31,28 +31,23 @@ export const TransactionListPage: React.FC = ({}) => {
           <Table.HeadCell>Amount</Table.HeadCell>
         </Table.Head>
         <Table.Body>
-          {transactions.map((transaction, index) =>
-            renderRow(transaction, index)
-          )}
+          {transactions.map((transaction) => renderRow(transaction))}
         </Table.Body>
       </Table.Container>
     );
   };
 
-  const renderRow = (
-    transaction: Transaction,
-    index: number | string
-  ): React.ReactElement => {
+  const renderRow = (transaction: Transaction): React.ReactElement => {
     const money = new Money(transaction.amount, "EUR");
     return (
-      <Table.Row key={index}>
+      <Table.Row key={transaction.id}>
         <Table.DataCell>{transaction.value_date}</Table.DataCell>
         <Table.DataCell fontWeight="medium">
           {transaction.receiver_name.slice(0, 30)}
         </Table.DataCell>
         <Table.DataCell>{transaction.purpose.slice(0, 30)}</Table.DataCell>
         <Table.DataCell>
-          {<Badge variant="white">{transaction.transaction_type}</Badge>}
+          {<Badge variant="white">{transaction.type}</Badge>}
         </Table.DataCell>
         <Table.DataCell>{transaction.category}</Table.DataCell>
         <Table.DataCell>{<MoneyBadge money={money} />}</Table.DataCell>

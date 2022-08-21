@@ -24,6 +24,25 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface Balance
+ */
+export interface Balance {
+    /**
+     * 
+     * @type {number}
+     * @memberof Balance
+     */
+    'value': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Balance
+     */
+    'currency': string;
+}
+/**
+ * 
+ * @export
  * @interface HTTPValidationError
  */
 export interface HTTPValidationError {
@@ -76,7 +95,7 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    'transaction_type': string;
+    'type': string;
     /**
      * 
      * @type {string}
@@ -107,6 +126,62 @@ export interface Transaction {
      * @memberof Transaction
      */
     'category': TransactionCategory;
+    /**
+     * 
+     * @type {TransactionFlow}
+     * @memberof Transaction
+     */
+    'flow': TransactionFlow;
+    /**
+     * 
+     * @type {number}
+     * @memberof Transaction
+     */
+    'balance': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Transaction
+     */
+    'id': number;
+}
+/**
+ * 
+ * @export
+ * @interface TransactionByCategory
+ */
+export interface TransactionByCategory {
+    /**
+     * 
+     * @type {number}
+     * @memberof TransactionByCategory
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {TransactionCategory}
+     * @memberof TransactionByCategory
+     */
+    'category': TransactionCategory;
+}
+/**
+ * 
+ * @export
+ * @interface TransactionByType
+ */
+export interface TransactionByType {
+    /**
+     * 
+     * @type {number}
+     * @memberof TransactionByType
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {TransactionFlow}
+     * @memberof TransactionByType
+     */
+    'flow': TransactionFlow;
 }
 /**
  * An enumeration.
@@ -136,6 +211,20 @@ export type TransactionCategory = typeof TransactionCategory[keyof typeof Transa
 
 
 /**
+ * An enumeration.
+ * @export
+ * @enum {string}
+ */
+
+export const TransactionFlow = {
+    Einkommen: 'einkommen',
+    Ausgaben: 'ausgaben'
+} as const;
+
+export type TransactionFlow = typeof TransactionFlow[keyof typeof TransactionFlow];
+
+
+/**
  * 
  * @export
  * @interface ValidationError
@@ -160,6 +249,121 @@ export interface ValidationError {
      */
     'type': string;
 }
+
+/**
+ * BalanceApi - axios parameter creator
+ * @export
+ */
+export const BalanceApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get Balance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBalanceBalanceGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/balance`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * BalanceApi - functional programming interface
+ * @export
+ */
+export const BalanceApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = BalanceApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Balance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getBalanceBalanceGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Balance>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getBalanceBalanceGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * BalanceApi - factory interface
+ * @export
+ */
+export const BalanceApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = BalanceApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get Balance
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getBalanceBalanceGet(options?: any): AxiosPromise<Balance> {
+            return localVarFp.getBalanceBalanceGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * BalanceApi - interface
+ * @export
+ * @interface BalanceApi
+ */
+export interface BalanceApiInterface {
+    /**
+     * 
+     * @summary Get Balance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BalanceApiInterface
+     */
+    getBalanceBalanceGet(options?: AxiosRequestConfig): AxiosPromise<Balance>;
+
+}
+
+/**
+ * BalanceApi - object-oriented interface
+ * @export
+ * @class BalanceApi
+ * @extends {BaseAPI}
+ */
+export class BalanceApi extends BaseAPI implements BalanceApiInterface {
+    /**
+     * 
+     * @summary Get Balance
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BalanceApi
+     */
+    public getBalanceBalanceGet(options?: AxiosRequestConfig) {
+        return BalanceApiFp(this.configuration).getBalanceBalanceGet(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
 
 /**
  * DefaultApi - axios parameter creator
@@ -414,11 +618,125 @@ export const TransactionApiAxiosParamCreator = function (configuration?: Configu
     return {
         /**
          * 
-         * @summary Get Transactions
+         * @summary Get Transaction Group By Category
+         * @param {string} startDate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTransactionsTransactionsGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getTransactionGroupByCategoryTransactionsGroupByCategoryGet: async (startDate: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'startDate' is not null or undefined
+            assertParamExists('getTransactionGroupByCategoryTransactionsGroupByCategoryGet', 'startDate', startDate)
+            const localVarPath = `/transactions/group_by/category`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (startDate !== undefined) {
+                localVarQueryParameter['start_date'] = (startDate as any instanceof Date) ?
+                    (startDate as any).toISOString().substr(0,10) :
+                    startDate;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Transaction Group By Flow
+         * @param {string} startDate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionGroupByFlowTransactionsGroupByFlowGet: async (startDate: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'startDate' is not null or undefined
+            assertParamExists('getTransactionGroupByFlowTransactionsGroupByFlowGet', 'startDate', startDate)
+            const localVarPath = `/transactions/group_by/flow`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (startDate !== undefined) {
+                localVarQueryParameter['start_date'] = (startDate as any instanceof Date) ?
+                    (startDate as any).toISOString().substr(0,10) :
+                    startDate;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Transaction
+         * @param {number} transactionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionTransactionsTransactionIdGet: async (transactionId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'transactionId' is not null or undefined
+            assertParamExists('getTransactionTransactionsTransactionIdGet', 'transactionId', transactionId)
+            const localVarPath = `/transactions/{transaction_id}`
+                .replace(`{${"transaction_id"}}`, encodeURIComponent(String(transactionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get Transactions
+         * @param {number} [skip] 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionsTransactionsGet: async (skip?: number, limit?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/transactions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -430,6 +748,14 @@ export const TransactionApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (skip !== undefined) {
+                localVarQueryParameter['skip'] = skip;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
 
 
     
@@ -454,12 +780,47 @@ export const TransactionApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Get Transactions
+         * @summary Get Transaction Group By Category
+         * @param {string} startDate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTransactionsTransactionsGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Transaction>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTransactionsTransactionsGet(options);
+        async getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TransactionByCategory>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Transaction Group By Flow
+         * @param {string} startDate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TransactionByType>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Transaction
+         * @param {number} transactionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTransactionTransactionsTransactionIdGet(transactionId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Transaction>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTransactionTransactionsTransactionIdGet(transactionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get Transactions
+         * @param {number} [skip] 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getTransactionsTransactionsGet(skip?: number, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Transaction>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTransactionsTransactionsGet(skip, limit, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -474,12 +835,44 @@ export const TransactionApiFactory = function (configuration?: Configuration, ba
     return {
         /**
          * 
-         * @summary Get Transactions
+         * @summary Get Transaction Group By Category
+         * @param {string} startDate 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTransactionsTransactionsGet(options?: any): AxiosPromise<Array<Transaction>> {
-            return localVarFp.getTransactionsTransactionsGet(options).then((request) => request(axios, basePath));
+        getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate: string, options?: any): AxiosPromise<Array<TransactionByCategory>> {
+            return localVarFp.getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Transaction Group By Flow
+         * @param {string} startDate 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate: string, options?: any): AxiosPromise<Array<TransactionByType>> {
+            return localVarFp.getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Transaction
+         * @param {number} transactionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionTransactionsTransactionIdGet(transactionId: number, options?: any): AxiosPromise<Transaction> {
+            return localVarFp.getTransactionTransactionsTransactionIdGet(transactionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get Transactions
+         * @param {number} [skip] 
+         * @param {number} [limit] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTransactionsTransactionsGet(skip?: number, limit?: number, options?: any): AxiosPromise<Array<Transaction>> {
+            return localVarFp.getTransactionsTransactionsGet(skip, limit, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -492,12 +885,44 @@ export const TransactionApiFactory = function (configuration?: Configuration, ba
 export interface TransactionApiInterface {
     /**
      * 
-     * @summary Get Transactions
+     * @summary Get Transaction Group By Category
+     * @param {string} startDate 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TransactionApiInterface
      */
-    getTransactionsTransactionsGet(options?: AxiosRequestConfig): AxiosPromise<Array<Transaction>>;
+    getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate: string, options?: AxiosRequestConfig): AxiosPromise<Array<TransactionByCategory>>;
+
+    /**
+     * 
+     * @summary Get Transaction Group By Flow
+     * @param {string} startDate 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApiInterface
+     */
+    getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate: string, options?: AxiosRequestConfig): AxiosPromise<Array<TransactionByType>>;
+
+    /**
+     * 
+     * @summary Get Transaction
+     * @param {number} transactionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApiInterface
+     */
+    getTransactionTransactionsTransactionIdGet(transactionId: number, options?: AxiosRequestConfig): AxiosPromise<Transaction>;
+
+    /**
+     * 
+     * @summary Get Transactions
+     * @param {number} [skip] 
+     * @param {number} [limit] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApiInterface
+     */
+    getTransactionsTransactionsGet(skip?: number, limit?: number, options?: AxiosRequestConfig): AxiosPromise<Array<Transaction>>;
 
 }
 
@@ -510,13 +935,51 @@ export interface TransactionApiInterface {
 export class TransactionApi extends BaseAPI implements TransactionApiInterface {
     /**
      * 
-     * @summary Get Transactions
+     * @summary Get Transaction Group By Category
+     * @param {string} startDate 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TransactionApi
      */
-    public getTransactionsTransactionsGet(options?: AxiosRequestConfig) {
-        return TransactionApiFp(this.configuration).getTransactionsTransactionsGet(options).then((request) => request(this.axios, this.basePath));
+    public getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate: string, options?: AxiosRequestConfig) {
+        return TransactionApiFp(this.configuration).getTransactionGroupByCategoryTransactionsGroupByCategoryGet(startDate, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Transaction Group By Flow
+     * @param {string} startDate 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApi
+     */
+    public getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate: string, options?: AxiosRequestConfig) {
+        return TransactionApiFp(this.configuration).getTransactionGroupByFlowTransactionsGroupByFlowGet(startDate, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Transaction
+     * @param {number} transactionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApi
+     */
+    public getTransactionTransactionsTransactionIdGet(transactionId: number, options?: AxiosRequestConfig) {
+        return TransactionApiFp(this.configuration).getTransactionTransactionsTransactionIdGet(transactionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get Transactions
+     * @param {number} [skip] 
+     * @param {number} [limit] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionApi
+     */
+    public getTransactionsTransactionsGet(skip?: number, limit?: number, options?: AxiosRequestConfig) {
+        return TransactionApiFp(this.configuration).getTransactionsTransactionsGet(skip, limit, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
