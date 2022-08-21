@@ -41,6 +41,6 @@ export const balanceSlice = createSlice({
   },
 });
 
-export const selectBalance = (state: RootState) => state.balance.balance;
+export const selectBalance = (state: RootState) => state.balance;
 
 export default balanceSlice.reducer;

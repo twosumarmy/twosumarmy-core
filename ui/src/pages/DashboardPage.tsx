@@ -3,13 +3,18 @@ import { Stats } from "../components/Stats/Stats";
 import { Money } from "../lib/money";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchBalance, selectBalance } from "../redux/reducers/balanceSlice";
+import { fetchFlow, selectFlow } from "../redux/reducers/flowSlice";
 
 export const DashboardPage: React.FC = ({}) => {
   const dispatch = useAppDispatch();
-  const balance = useAppSelector(selectBalance);
+  const { balance } = useAppSelector(selectBalance);
+  const { flow } = useAppSelector(selectFlow);
 
   useEffect(() => {
+    const now = new Date();
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     dispatch(fetchBalance());
+    dispatch(fetchFlow({ startDate: firstDayOfMonth }));
   }, []);
 
   const render = (): React.ReactElement => {
@@ -22,6 +27,12 @@ export const DashboardPage: React.FC = ({}) => {
       const money = new Money(balance.value, "EUR");
       stats.push({ title: "Balance", stats: money.formatted });
     }
+    if (flow) {
+      flow.forEach((value) => {
+        const money = new Money(value.amount, "EUR");
+        stats.push({ title: value.flow, stats: money.formatted });
+      });
+    }
 
     return (
       <div>
@@ -30,8 +41,8 @@ export const DashboardPage: React.FC = ({}) => {
             Current month
           </h3>
           <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {stats.map((value) => (
-              <Stats title={value.title} stats={value.stats} />
+            {stats.map((value, index) => (
+              <Stats key={index} title={value.title} stats={value.stats} />
             ))}
           </dl>
         </div>

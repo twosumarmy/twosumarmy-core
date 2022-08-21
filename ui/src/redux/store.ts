@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import balanceSlice from "./reducers/balanceSlice";
+import flowSlice from "./reducers/flowSlice";
 import transactionSlice from "./reducers/transactionSlice";
 
 export const store = configureStore({
   reducer: {
     transactions: transactionSlice,
     balance: balanceSlice,
+    flow: flowSlice,
   },
 });
 
