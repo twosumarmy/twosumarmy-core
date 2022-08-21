@@ -6,9 +6,9 @@ from pydantic import BaseModel
 from app.enums import TransactionCategory, TransactionType
 
 
-class Account(BaseModel):
-    id: str
-    balance: int
+class Balance(BaseModel):
+    value: float
+    currency: str
 
 
 class Transaction(BaseModel):

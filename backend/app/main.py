@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import transaction, file_upload
+from app.routers import transaction, file_upload, balance
 
 Base.metadata.create_all(bind=engine)
 
@@ -25,6 +25,10 @@ app.include_router(file_upload.router,
 app.include_router(transaction.router,
                    prefix="/transactions",
                    tags=["transaction"])
+
+app.include_router(balance.router,
+                   prefix="/balance",
+                   tags=["balance"])
 
 
 @app.get("/health")

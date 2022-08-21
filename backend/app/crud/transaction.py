@@ -2,7 +2,12 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models import TransactionORM
-from app.schemas import Transaction
+from app.schemas import Transaction, Balance
+
+
+def get_balance(db: Session):
+    transaction = db.query(TransactionORM).first()
+    return Balance(value=transaction.balance, currency=transaction.currency)
 
 
 def get_transactions(db: Session, skip: int, limit: int):
