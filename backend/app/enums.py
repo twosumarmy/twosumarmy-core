@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TransactionCategory(Enum):
+class TransactionCategory(str, Enum):
     CASH = "barzahlung"  # transaction_type
     ENTERTAINMENT = "entertainment"  # ['netflix', 'prime video', 'disney'],
     FOOD = "essen"  # ['bar', 'restaurant', 'essen'],
@@ -19,6 +19,6 @@ class TransactionCategory(Enum):
     OTHERS = "andere"
 
 
-class TransactionType(Enum):
+class TransactionFlow(str, Enum):
     income = "einkommen"
     expenses = "ausgaben"

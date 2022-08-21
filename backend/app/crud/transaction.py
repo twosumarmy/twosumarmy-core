@@ -2,7 +2,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.models import TransactionORM
-from app.schemas import Transaction, Balance
+from app.schemas import Transaction, Balance, TransactionCreate
 
 
 def get_balance(db: Session):
@@ -23,12 +23,12 @@ def get_transaction_group_by_category(db: Session):
         TransactionORM.category).all()
 
 
-def get_transaction_group_by_type(db: Session):
-    return db.query(TransactionORM.type, func.sum(TransactionORM.amount).label("amount")).group_by(
-        TransactionORM.type).all()
+def get_transaction_group_by_flow(db: Session):
+    return db.query(TransactionORM.flow, func.sum(TransactionORM.amount).label("amount")).group_by(
+        TransactionORM.flow).all()
 
 
-def create_transaction(db: Session, transaction: Transaction):
+def create_transaction(db: Session, transaction: TransactionCreate):
     transaction_orm = TransactionORM(**transaction.dict())
     db.add(transaction_orm)
     db.commit()

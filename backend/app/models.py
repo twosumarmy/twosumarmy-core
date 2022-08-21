@@ -1,7 +1,7 @@
 from sqlalchemy import Float, Column, Integer, String, Date, Enum
 
 from app.database import Base
-from app.enums import TransactionCategory, TransactionType
+from app.enums import TransactionCategory, TransactionFlow
 
 
 class TransactionORM(Base):
@@ -15,10 +15,12 @@ class TransactionORM(Base):
 
     origin_iban = Column(String)
 
-    transaction_type = Column(String)
     receiver_name = Column(String)
     receiver_iban = Column(String)
     receiver_swift_code = Column(String)
+
+    type = Column(String)
     category = Column(Enum(TransactionCategory))
-    type = Column(Enum(TransactionType))
+
     balance = Column(Float)
+    flow = Column(Enum(TransactionFlow))

@@ -27,6 +27,6 @@ async def get_transaction_group_by_category(start_date: datetime.date, db: Sessi
     return transaction_crud.get_transaction_group_by_category(db=db)
 
 
-@router.get("/group_by/type", response_model=List[TransactionByType])
-async def get_transaction_group_by_type(start_date: datetime.date, db: Session = Depends(get_db)):
-    return transaction_crud.get_transaction_group_by_type(db=db)
+@router.get("/group_by/flow", response_model=List[TransactionByType])
+async def get_transaction_group_by_flow(start_date: datetime.date, db: Session = Depends(get_db)):
+    return transaction_crud.get_transaction_group_by_flow(db=db)
